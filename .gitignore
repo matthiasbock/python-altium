@@ -1,0 +1,8 @@
+olefileio_pl
+__pychache__
+*~
+.~lock*
+*.pyc
+*.svg
+*.Sch*
+*.Pcb*
