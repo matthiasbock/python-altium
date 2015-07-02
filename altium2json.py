@@ -40,7 +40,8 @@ def read(section):
                 continue
             
             if len(property) > 0 and property[0].isalpha():
-                (name, value) = property.split(b"=", 1)
+                values = property.split(b"=", 1)
+                (name, value) = (values[0], "=".join(values[1:]))
                 if name == "UNIQUEID":
                     # strip trailing 0x00s, that for some reason appear sometimes 
                     value = value[:8]
