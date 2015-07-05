@@ -15,6 +15,8 @@ from struct import unpack
 
 from os.path import getsize
 
+from SchLib-PinProperties import *
+
 # read two bytes and
 # interpret as little-endian 16-bit word
 def readShort(f):
@@ -26,42 +28,6 @@ def readShort(f):
 def readWord(f):
     (w,) = unpack('<I', f.read(4))
     return w
-
-class PinProperties:
-    def __init__(self, data):
-        # forget about the first 15,5 bytes for now
-
-        # lower two or four bits are for pin orientation
-        # 0 = 0°
-        # 1 = 90°
-        # 2 = 180°
-        # 3 = 270°
-        self.Orientation = ord(data[15]) & 0x0f
-        print "Pin orientation: "+str(self.Orientation*90)+"deg"
-
-        # x and y are signed 16-bit shorts
-        (x,y) = unpack('<hh', data[18:22])
-        print "x="+str(x)+", y="+str(y)
-        
-        # disregard another four bytes (0x00)        
-        
-        # designator and identifier
-        cursor = 22+4
-
-        strlen = ord(data[cursor])
-        cursor += 1
-        identifier = data[cursor:cursor+strlen]
-        print "Identifier: "+identifier
-        cursor += strlen
-
-        strlen = ord(data[cursor])
-        cursor += 1
-        designator = data[cursor:cursor+strlen]
-        print "Designator: "+designator
-        cursor += strlen
-
-        # disregard three more bytes
-     
 
 # read one record from file
 def readRecord(f, debug=True):
