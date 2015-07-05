@@ -64,7 +64,7 @@ def parse(properties, split_char, next_split_char):
             (name, value) = (values[0], "=".join(values[1:]))
 
             if name == "UNIQUEID":
-                # strip trailing 0x00s, that for some reason appear sometimes (OLE parser error) 
+                # strip trailing 0x00s, that for some reason appear sometimes (OLE parser error?) 
                 value = value[:8]
 
             # strip chr(0)s
