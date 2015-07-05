@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
-mm  = 1
-mil = 2.54
+from Constants import *
+
+from SchematicElements import *
+from SchematicDocument import *
 
 from PCBComponentElements import *
 from PCBComponent import *
 from PCBLibrary import *
-

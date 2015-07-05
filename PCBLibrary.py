@@ -10,9 +10,8 @@ class PCBLibrary:
         if not c in self.components:
             self.components.append(c)
 
-    def savePcbLib(self, filename):
-        # create OLE archive
-        f = open(filename,'w')
-        f.write('test')
-        f.close
-
+    def exportPcbLib(self):
+        ole = "begin PcbLib\n"
+        for component in self.components:
+            ole += component.exportPcbLib 
+        return ole

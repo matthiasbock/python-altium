@@ -20,6 +20,6 @@ library.append(component)
 
 filename = "header.PcbLib"
 print "Saving library as \""+filename+"\" ..."
-library.savePcbLib(filename)
+open(filename,'w').write( library.exportPcbLib(filename) )
 
 print "done."
