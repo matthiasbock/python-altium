@@ -69,6 +69,12 @@ def readRecord(f, debug=True):
         for i in range(len(data)):
             print hex(ord(data[i]))[2:].upper().zfill(2),
         print ""
+        for i in range(len(data)):
+            s = "  "
+            if data[i].isalpha():
+                s = " "+data[i]
+            print s,
+        print ""
 
         # extract record type        
         binaryType = ord(data[0])

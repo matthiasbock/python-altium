@@ -3,18 +3,21 @@
 #
 # A schematic library contains schematic symbols definitions.
 # The data of a symbol definition is a serialized bunch of data records.
-# Each record has a certain type,
-# the following types are recognized:
+# Some records are text-, some are binary-encoded.
+# Every record has a type number,
+# Text-encoded records include a "RECORD=..." key-value pair.
+# Binary records begin with one byte representing the record type. 
+# The following types are recognized:
 #
 class RecordType:
-    SchematicComponent  = 1 # ?
-    Pin                 = 2
+    SchematicComponent  = 1 # is this correct ?
+    Pin                 = 2 # binary
     # ?                 = 3
     Label               = 4
     Bezier              = 5
-    Polyline            = 6
+    Polyline            = 6 # text
     Polygon             = 7
-    Ellipse             = 8
+    Ellipse             = 8 # text
     # ?                 = 9
     RoundRectangle      = 10
     EllipticalArc       = 11
