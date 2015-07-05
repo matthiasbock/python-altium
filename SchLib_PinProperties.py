@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# https://docs.python.org/2/library/struct.html#format-characters
+from struct import unpack
+
 #
 # The following classes represent recognized values
 # for the corresponding pin property

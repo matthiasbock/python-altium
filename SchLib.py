@@ -6,7 +6,7 @@
 # Each record has a certain type,
 # the following types are recognized:
 #
-class Record:
+class RecordType:
     SchematicComponent  = 1 # ?
     Pin                 = 2
     # ?                 = 3

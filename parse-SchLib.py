@@ -15,7 +15,8 @@ from struct import unpack
 
 from os.path import getsize
 
-from SchLib-PinProperties import *
+from SchLib import *
+from SchLib_PinProperties import *
 
 # read two bytes and
 # interpret as little-endian 16-bit word
@@ -61,21 +62,38 @@ def readRecord(f, debug=True):
                 #print "Last char is 0x00 (C-style string terminator). Stripping that."
             data = data[:len(data)-1]
     else:
-        # print hex chars
+        # print binary record as hex chars
+        for i in range(len(data)):
+            print str(i).zfill(2),
+        print ""
         for i in range(len(data)):
             print hex(ord(data[i]))[2:].upper().zfill(2),
         print ""
-        
+
+        # extract record type        
         binaryType = ord(data[0])
         
-        # schematic symbol: pin
-        if binaryType == 0x02:
-            p = PinProperties(data)
+        # evaluate record type
+        if binaryType == RecordType.Pin:
+            parsed = PinProperties(data)
 
-        # pin symbol: line?
-        elif binaryType == 0xD0:
-            #...
-            print "Sorry, this binary type is not supported yet."
+        else:
+            print "Record of unsupported type:",
+
+            # kind of a switch-case statement
+            def printUnsupported(s):
+                print s
+            {
+                Bezier              : printUnsupported("Bezier"),
+                Polyline            : printUnsupported("Polyline"),
+                Polygon             : printUnsupported("Polygon"),
+                Ellipse             : printUnsupported("Ellipse"),
+                RoundRectangle      : printUnsupported("Round Rectangle"),
+                EllipticalArc       : printUnsupported("Elliptical Arc"),
+                Arc                 : printUnsupported("Arc"),
+                Line                : printUnsupported("Line"),
+                Rectangle           : printUnsupported("Rectangle")
+            }[binaryType]()
 
     if debug:
         if data[0] == "|" and len(data) > 1:
@@ -92,11 +110,6 @@ def readRecord(f, debug=True):
                 pairs[xx[0]] = xx[1]
 
             print pairs
-
-        if data[0].isalpha():
-            print data
-        else:
-            print "Record is binary."
 
     return
 
