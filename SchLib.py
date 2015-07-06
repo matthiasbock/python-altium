@@ -9,7 +9,7 @@
 # Binary records begin with one byte representing the record type. 
 # The following types are recognized:
 #
-class RecordType:
+class SchLib_RecordType:
     SchematicComponent  = 1 # is this correct ?
     Pin                 = 2 # binary
     # ?                 = 3
