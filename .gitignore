@@ -1,6 +1,8 @@
 olefileio_pl
 __pychache__
 
+*.sh
+
 *~
 .~lock*
 *.pyc

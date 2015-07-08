@@ -25,23 +25,29 @@ class SubRecord_Fill:
             cursor += 4
             return i        
 
+        # helper function to unpack little-endian 64-bit floats (doubles)
+        def float64():
+            global cursor
+            (f,) = unpack('<d', data[cursor:cursor+8])
+            cursor += 8
+            return f
+
         # parse away...        
         self.X1 = signed32()
         self.Y1 = signed32()
         self.X2 = signed32()
         self.Y2 = signed32()
 
-#        self.Rotation = signed32()
+        self.Rotation = float64()
 
         # debug
         print self.__dict__
 
-        # 18 more bytes of unknown purpose
+        # 9 more bytes of unknown purpose
         
         #
         # Properties yet unaccounted for:
         #
-        # Rotation:              angle (float?)
         # Layer:                 multiple choice
         # Net:                   multiple choice
         # Locked:                true/false
