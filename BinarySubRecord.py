@@ -60,6 +60,7 @@ class SubRecord_Common:
         # Pad SizeAndShape: 0x4A or 0x01
         # Arc:  0x21
         # 3D Body: 0x45
+        # Fill: 0x39
         
         # The remaining bytes are always the same:
         # 0x 0C 00

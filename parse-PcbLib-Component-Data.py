@@ -13,9 +13,10 @@ from common import *
 from BinarySubRecord import *
 
 from PcbLib import *
+from PcbLib_Arc   import Arc
 from PcbLib_Pad   import Pad
 from PcbLib_Track import Track
-from PcbLib_Arc   import Arc
+from PcbLib_Fill  import Fill
 
 #
 # parse one record from buffer
@@ -24,6 +25,11 @@ def readRecord(buffer):
 
     # The first byte defines the type of the record that follows.  
     recordType = ord(buffer[0])
+
+    if recordType == PcbComponent_RecordType.Arc:
+        print "Record type: Arc"
+        arc = Arc(buffer)
+        return arc
 
     if recordType == PcbComponent_RecordType.Pad:
         print "Record type: Pad"
@@ -35,6 +41,11 @@ def readRecord(buffer):
         track = Track(buffer)
         return track
 
+    elif recordType == PcbComponent_RecordType.Fill:
+        print "Record type: Fill"
+        fill = Fill(buffer)
+        return fill
+
     elif recordType == PcbComponent_RecordType.Body3D:
         print "Record type: 3D Body"
         print "Specifies record length. Continuing."
@@ -43,11 +54,6 @@ def readRecord(buffer):
         # plus type byte
         subrecord.length += 1
         return subrecord        
-
-    elif recordType == PcbComponent_RecordType.Arc:
-        print "Record type: Arc"
-        arc = Arc(buffer)
-        return arc
 
     else:
         print "Error: Record type unrecognized: "+str(recordType)

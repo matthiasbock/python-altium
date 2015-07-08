@@ -2,12 +2,12 @@
 
 from struct import unpack
 
-# Tracks are binary-encoded records
-# and consist of one SubRecord
+# Fills (filled rectangles) are binary-encoded records
+# with at least one SubRecord
 from BinarySubRecord import *
 
-# parse a track
-class SubRecord_Track:
+# parse
+class SubRecord_Fill:
     def __init__(self, subrecord):
         
         # get data from subrecord
@@ -31,16 +31,17 @@ class SubRecord_Track:
         self.X2 = signed32()
         self.Y2 = signed32()
 
-        self.Width = signed32()
+#        self.Rotation = signed32()
 
         # debug
         print self.__dict__
 
-        # 12 more bytes of unknown purpose
+        # 18 more bytes of unknown purpose
         
         #
         # Properties yet unaccounted for:
         #
+        # Rotation:              angle (float?)
         # Layer:                 multiple choice
         # Net:                   multiple choice
         # Locked:                true/false
@@ -50,10 +51,10 @@ class SubRecord_Track:
         #
 
 #
-# A class for the line = tracks that can be used to draw a footprint
+# A class for the fill elements tat can be used to draw a footprint
 # in a footprint library (PcbLib)
 #
-class Track:
+class Fill:
     
     #
     # Parse properties from binary string
@@ -61,13 +62,13 @@ class Track:
     #
     def __init__(self, data):
 
-        # Record Type = Track
-        assert ord(data[0]) == 4
+        # Record Type = Fill
+        assert ord(data[0]) == 6
         
         subrecord = SubRecord(data[1:])
-        self.Properties = SubRecord_Track(subrecord)
+        self.Properties = SubRecord_Fill(subrecord)
         
-        # No bytes unaccounted for.
+        # No bytes unaccounted for
         self.length = 1+subrecord.length
 
     #

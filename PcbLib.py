@@ -12,4 +12,5 @@ class PcbComponent_RecordType:
     Arc         = 1 # binary
     Pad         = 2 # binary
     Track       = 4 # binary
+    Fill        = 6 # binary
     Body3D      = 12 # binary with text-based SubRecord
