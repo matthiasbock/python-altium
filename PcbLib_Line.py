@@ -1,7 +1,52 @@
 #!/usr/bin/python
 
-# https://docs.python.org/2/library/struct.html#format-characters
 from struct import unpack
+
+# Lines are binary-encoded records
+# and consist of one SubRecord
+from BinarySubRecord import *
+
+# parse a line
+class SubRecord_Line:
+    def __init__(self, subrecord):
+        
+        # get data from subrecord
+        data = subrecord.content
+
+        # first 13 bytes are of unknown purpose
+        global cursor
+        cursor = 13
+
+        # helper function to unpack signed 32-bit integers
+        def signed32():
+            global cursor
+            (i,) = unpack('<i',data[cursor:cursor+4])
+            cursor += 4
+            return i        
+
+        # parse away...        
+        self.X1 = signed32()
+        self.Y1 = signed32()
+        self.X2 = signed32()
+        self.Y2 = signed32()
+
+        self.Width = signed32()
+
+        # debug
+        print self.__dict__
+
+        # 12 more bytes of unknown purpose
+        
+        #
+        # Line properties yet unaccounted for:
+        #
+        # Layer:                 multiple choice
+        # Net:                   multiple choice
+        # Locked:                true/false
+        # Keepout:               true/false
+        # Solder Mask Expansion: multiple choice
+        # Paste Mask Expansion:  multiple choide
+        #
 
 #
 # A class for the line = tracks that can be used to draw a footprint
@@ -17,39 +62,12 @@ class Line:
 
         # Record Type = Line
         assert ord(data[0]) == 4
-        cursor = 1
-
-        # helper function to unpack signed 32-bit integers
-        def signed32():
-            i = unpack('<i',data[cursor:cursor+4])
-            cursor += 4
-            return i
         
-        # four bytes content length
-        contentLength = signed32()
+        subrecord = SubRecord(data[1:])
+        self.Properties = SubRecord_Line(subrecord)
         
-        # 13 bytes of unknown purpose
-        # that can also be found in Pad records
-        cursor += 13
-        
-        self.X1 = signed32()
-        self.Y1 = signed32()
-        self.X2 = signed32()
-        self.Y2 = signed32()
-        
-        self.Width = signed32()
-        
-        # unaccounted bytes
-        cursor += 10
-        
-        # guessed:
-        self.Net = ord(data[cursor])
-        cursor += 1
-        
-        # guessed:
-        self.Layer = ord(data[cursor])
-        
-        # one more byte unaccounted for
+        # No bytes unaccounted for.
+        self.length = 1+subrecord.length
 
     #
     # Export pin properties as binary string

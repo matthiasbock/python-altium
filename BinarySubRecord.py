@@ -21,7 +21,7 @@ class SubRecord:
         
         # first four bytes are length
         (self.contentLength,) = unpack('<I', data[:4])
-        print "SubRecord length: "+str(self.contentLength) 
+        #print "SubRecord length: "+str(self.contentLength) 
         
         self.content = ""
         for i in range(self.contentLength):
@@ -36,7 +36,7 @@ def SubRecord_String(subrecord):
 
     # verify string length
     length = ord(subrecord.content[0])
-    print "String length: "+str(length)
+    #print "String length: "+str(length)
     assert length == subrecord.length-5
 
     # skip length byte

@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-# https://docs.python.org/2/library/struct.html#format-characters
 from struct import unpack
 
 # A pad is binary-encoded and consists of 6 entries of type subrecord.
@@ -9,6 +8,8 @@ from BinarySubRecord import *
 # parse a Size and Shape subrecord
 class SubRecord_SizeAndShape:
     def __init__(self, subrecord):
+        
+        # get data from subrecord
         data = subrecord.content
         
         # first 13 bytes are of unknown purpose
@@ -18,7 +19,7 @@ class SubRecord_SizeAndShape:
         # helper function to unpack signed 32-bit integers
         def signed32():
             global cursor
-            i = unpack('<i',data[cursor:cursor+4])
+            (i,) = unpack('<i',data[cursor:cursor+4])
             cursor += 4
             return i
 
@@ -36,6 +37,9 @@ class SubRecord_SizeAndShape:
 
         # Hole Size
         self.HoleSize = signed32()
+        
+        # debug
+        print self.__dict__
         
         # 19 bytes of unknown purpose
         cursor += 19

@@ -13,21 +13,29 @@ from common import *
 from BinarySubRecord import *
 
 from PcbLib import *
-from PcbLib_Pad import *
+from PcbLib_Pad import Pad
+from PcbLib_Line import Line
 
 #
 # parse one record from buffer
 #
 def readRecord(buffer):
 
+    # The first byte defines the type of the record that follows.  
     recordType = ord(buffer[0])
-    print "Record type: "+str(recordType)
 
     if recordType == PcbComponent_RecordType.Pad:
+        print "Record type: Pad"
         pad = Pad(buffer)
         return pad
 
+    elif recordType == PcbComponent_RecordType.Line:
+        print "Record type: Line"
+        line = Line(buffer)
+        return line
+
     else:
+        print "Error: Record type unrecognized. Please report an issue on https://github.com/matthiasbock/python-altium."
         return
 
 #
@@ -40,7 +48,7 @@ def parsePcbLibData(buffer, size):
     # first entry is the footprint's name
     header = SubRecord(buffer)
     name = SubRecord_String(header)
-    print "Name: "+name
+    print "Footprint name: "+name
 
     cursor = header.length
 
