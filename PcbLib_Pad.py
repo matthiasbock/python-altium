@@ -13,8 +13,9 @@ class SubRecord_SizeAndShape:
         data = subrecord.content
         
         # first 13 bytes are of unknown purpose
+        self.common = SubRecord_Common(data)
         global cursor
-        cursor = 13
+        cursor = self.common.length #13
 
         # helper function to unpack signed 32-bit integers
         def signed32():

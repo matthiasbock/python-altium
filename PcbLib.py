@@ -2,11 +2,14 @@
 
 #
 # A PCB library contains PCB footprint definitions.
-# The data of a definition is a serialized bunch of data records.
-# Records of footprints are apparently all stored in binary form.
-# Binary records begin with one byte representing the record type. 
-# The following types are recognized:
+# The data of a definition is a serialization of records.
+# Records are apparently always binary-encoded
+# but may contain text-based SubRecords ("|"-separated list of key=value pairs).
+#
+# The following record types are recognized:
 #
 class PcbComponent_RecordType:
-    Pad         = 2
-    Line        = 4 #?
+    Arc         = 1 # binary
+    Pad         = 2 # binary
+    Track       = 4 # binary
+    Body3D      = 12 # binary with text-based SubRecord

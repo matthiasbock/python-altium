@@ -42,5 +42,27 @@ def SubRecord_String(subrecord):
     # skip length byte
     return subrecord.content[1:]
 
-
+#
+# There is a SubRecord that can be found
+# in all PCB Component records so far
+# but is yet of unknown purpose.
+# The length appears to be always 13. 
+#
+class SubRecord_Common:
     
+    def __init__(self, subrecord):
+        
+        # get data from subrecord
+        #data = subrecord.content
+
+        # First byte:
+        # Line: 0x39
+        # Pad SizeAndShape: 0x4A or 0x01
+        # Arc:  0x21
+        # 3D Body: 0x45
+        
+        # The remaining bytes are always the same:
+        # 0x 0C 00
+        # 10x 0xFF
+    
+        self.length = 13

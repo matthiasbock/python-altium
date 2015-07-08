@@ -2,20 +2,21 @@
 
 from struct import unpack
 
-# Lines are binary-encoded records
+# Tracks are binary-encoded records
 # and consist of one SubRecord
 from BinarySubRecord import *
 
-# parse a line
-class SubRecord_Line:
+# parse a track
+class SubRecord_Track:
     def __init__(self, subrecord):
         
         # get data from subrecord
         data = subrecord.content
 
         # first 13 bytes are of unknown purpose
+        self.common = SubRecord_Common(data)
         global cursor
-        cursor = 13
+        cursor = self.common.length #13
 
         # helper function to unpack signed 32-bit integers
         def signed32():
@@ -38,7 +39,7 @@ class SubRecord_Line:
         # 12 more bytes of unknown purpose
         
         #
-        # Line properties yet unaccounted for:
+        # Track properties yet unaccounted for:
         #
         # Layer:                 multiple choice
         # Net:                   multiple choice
@@ -52,7 +53,7 @@ class SubRecord_Line:
 # A class for the line = tracks that can be used to draw a footprint
 # in a footprint library (PcbLib)
 #
-class Line:
+class Track:
     
     #
     # Parse properties from binary string
@@ -60,11 +61,11 @@ class Line:
     #
     def __init__(self, data):
 
-        # Record Type = Line
+        # Record Type = Track
         assert ord(data[0]) == 4
         
         subrecord = SubRecord(data[1:])
-        self.Properties = SubRecord_Line(subrecord)
+        self.Properties = SubRecord_Track(subrecord)
         
         # No bytes unaccounted for.
         self.length = 1+subrecord.length

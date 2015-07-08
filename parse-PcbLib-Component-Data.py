@@ -13,8 +13,9 @@ from common import *
 from BinarySubRecord import *
 
 from PcbLib import *
-from PcbLib_Pad import Pad
-from PcbLib_Line import Line
+from PcbLib_Pad   import Pad
+from PcbLib_Track import Track
+from PcbLib_Arc   import Arc
 
 #
 # parse one record from buffer
@@ -29,14 +30,31 @@ def readRecord(buffer):
         pad = Pad(buffer)
         return pad
 
-    elif recordType == PcbComponent_RecordType.Line:
-        print "Record type: Line"
-        line = Line(buffer)
-        return line
+    elif recordType == PcbComponent_RecordType.Track:
+        print "Record type: Track/Line"
+        track = Track(buffer)
+        return track
+
+    elif recordType == PcbComponent_RecordType.Body3D:
+        print "Record type: 3D Body"
+        print "Specifies record length. Continuing."
+        
+        subrecord = SubRecord(buffer[1:])
+        # plus type byte
+        subrecord.length += 1
+        return subrecord        
+
+    elif recordType == PcbComponent_RecordType.Arc:
+        print "Record type: Arc"
+        arc = Arc(buffer)
+        return arc
 
     else:
-        print "Error: Record type unrecognized. Please report an issue on https://github.com/matthiasbock/python-altium."
-        return
+        print "Error: Record type unrecognized: "+str(recordType)
+        print "Unable to derminine record length. Exiting."
+        print "Please report an issue on https://github.com/matthiasbock/python-altium"
+        from sys import exit
+        exit()
 
 #
 # buffer is the content of a file named Data
