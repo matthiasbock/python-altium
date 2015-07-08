@@ -9,8 +9,8 @@ def readShort(f):
     (h,) = unpack('<H', f.read(2))
     return h
 
-# read four bytes and
-# interpret as little-endian 32-bit word
-def readWord(f):
-    (w,) = unpack('<I', f.read(4))
-    return w
+# read four bytes from buffer and
+# return as unsigned little-endian 32-bit word
+def getU32(buffer):
+    (word,) = unpack('<I', buffer[:4])
+    return word

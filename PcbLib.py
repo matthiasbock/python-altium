@@ -8,7 +8,5 @@
 # The following types are recognized:
 #
 class PcbComponent_RecordType:
-    #unknwon = 1 # length 16
-    Designator  = 2
-    Pad         = 12
+    Pad         = 2
     Line        = 4 #?

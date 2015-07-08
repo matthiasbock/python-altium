@@ -3,27 +3,21 @@
 # https://docs.python.org/2/library/struct.html#format-characters
 from struct import unpack
 
-#
-# A class for the pads that can be used to draw a footprint
-# in a footprint library (PcbLib)
-#
-class Pad:
-    
-    #
-    # Parse pad properties from binary string
-    # e.g. as read from a PcbLib file
-    #
-    def __init__(self, data):
+# A pad is binary-encoded and consists of 6 entries of type subrecord.
+from BinarySubRecord import *
 
-        # Record Type = Pad
-        assert ord(data[0]) == 0x0C
+# parse a Size and Shape subrecord
+class SubRecord_SizeAndShape:
+    def __init__(self, subrecord):
+        data = subrecord.content
         
-        # 0x00
-        # 11x 0xFF
-        cursor = 12
+        # first 13 bytes are of unknown purpose
+        global cursor
+        cursor = 13
 
         # helper function to unpack signed 32-bit integers
         def signed32():
+            global cursor
             i = unpack('<i',data[cursor:cursor+4])
             cursor += 4
             return i
@@ -32,7 +26,7 @@ class Pad:
         self.X = signed32()
         self.Y = signed32()
 
-        # Size and Shape        
+        # Size and Shape
         self.XSize_Top = signed32()
         self.YSize_Top = signed32()
         self.XSize_Middle = signed32()
@@ -43,6 +37,73 @@ class Pad:
         # Hole Size
         self.HoleSize = signed32()
         
+        # 19 bytes of unknown purpose
+        cursor += 19
+
+        # more bytes of unknown purpose        
+        self.unknown1 = signed32()
+        
+        cursor += 2
+        
+        self.unknown2 = signed32()
+        self.unknown3 = signed32()
+        self.unknown4 = signed32()
+
+        cursor += 4        
+        
+        self.unknown5 = signed32()
+
+        # 26 more bytes of unknown purpose following
+
+#
+# A class for the pads that can be used to draw a footprint
+# in a footprint library (PcbLib)
+#
+class Pad:
+    
+    #
+    # Parse pad properties from binary string
+    # e.g. as read from a PcbLib file
+    #
+    # The record length is dynamic, so parsers need to invoke getLength() afterwards.
+    #
+    def __init__(self, data):
+
+        # Record Type = Pad
+        assert ord(data[0]) == 2
+        cursor = 1
+
+        # Six subrecords:
+        # Designator (string)
+        # unknown (binary)
+        # unknown (string)
+        # unknown (binary)
+        # Size and Shape struct
+        # Offset from Hole Center struct
+        
+        subrecord = SubRecord(data[cursor:])
+        cursor += subrecord.length
+        self.Designator = SubRecord_String(subrecord)
+
+        self.unknown1 = SubRecord(data[cursor:])
+        cursor += self.unknown1.length
+
+        self.unknown2 = SubRecord(data[cursor:])
+        cursor += self.unknown2.length
+
+        self.unknown3 = SubRecord(data[cursor:])
+        cursor += self.unknown3.length
+
+        subrecord = SubRecord(data[cursor:])
+        cursor += subrecord.length
+        self.SizeAndShape = SubRecord_SizeAndShape(subrecord)
+
+        subrecord = SubRecord(data[cursor:])
+        cursor += subrecord.length
+        #self.OffsetFromHoleCenter = SubRecord_OffsetFromHoleCenter(subrecord)
+
+        # last position of cursor equals total length of record
+        self.length = cursor
 
     #
     # Export pin properties as binary string
