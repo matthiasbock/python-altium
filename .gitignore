@@ -8,6 +8,7 @@ __pychache__
 *.pyc
 
 *.svg
+*.log
 
 *.Sch*
 *.Pcb*

@@ -27,3 +27,5 @@ if __name__ == '__main__':
         f = open(footprint.name+'.svg','w')
         f.write( footprint.__svg__() )
         f.close()
+
+    

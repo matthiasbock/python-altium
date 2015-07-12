@@ -34,7 +34,7 @@ class PcbLib:
         # Properties
         print "Library properties:"
         length = getU32(buffer)
-        header = buffer[4:4+length]
+        header = buffer[4:4+length-1] # also cut away the string's null terminator
         properties = header.strip('|').split('|')
         self.Properties = {}
         for prop in properties:
@@ -67,6 +67,12 @@ class PcbLib:
             self.Footprints.append(
                     Footprint(self.readStream(footprint+"/Data"))
                 )
+                
+        # Create a dictionary of footprints to access them by name
+        self.FootprintsByName = {}
+        for footprint in self.Footprints:
+            self.FootprintsByName[footprint.name] = footprint
+        #print self.FootprintsByName
 
     #
     # Read file from OLE container and return it's contents

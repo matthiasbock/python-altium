@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from struct import unpack
+from binascii import hexlify
 
 # A pad is binary-encoded and consists of 6 entries of type subrecord.
 from BinarySubRecord import *
@@ -41,6 +42,7 @@ class SubRecord_SizeAndShape:
         
         # debug
         #print self.__dict__
+        #print hexlify(data)
         
         # 19 bytes of unknown purpose
         cursor += 19
