@@ -40,7 +40,7 @@ class SubRecord_SizeAndShape:
         self.HoleSize = signed32()
         
         # debug
-        print self.__dict__
+        #print self.__dict__
         
         # 19 bytes of unknown purpose
         cursor += 19
@@ -119,4 +119,13 @@ class Pad:
         result = "".join([0x00 for i in range(15)])
         
         return result
+        
+
+    #
+    # Interface for Scalable Vector Graphics output
+    # http://www.w3schools.com/svg/svg_ellipse.asp
+    #
+    def __svg__(self):
+        p = self.SizeAndShape
+        return '<ellipse cx="'+str(p.X/10000)+'" cy="'+str(p.Y/10000)+'" rx="'+str(p.XSize_Top/20000)+'" ry="'+str(p.YSize_Top/20000)+'" style="fill:yellow;stroke:purple;stroke-width:2" />'
         

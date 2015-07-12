@@ -29,6 +29,11 @@ class SubRecord:
     
         self.length = 4 + self.contentLength
 
+    # for compatibility with the SVG writer
+    # this class must also expose a __svg__ method
+    def __svg__(self):
+        return ""
+
 #
 # parse SubRecord as string
 #

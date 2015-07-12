@@ -41,7 +41,7 @@ class SubRecord_Fill:
         self.Rotation = float64()
 
         # debug
-        print self.__dict__
+        #print self.__dict__
 
         # 9 more bytes of unknown purpose
         
@@ -86,4 +86,10 @@ class Fill:
         result = "".join([0x00 for i in range(15)])
         
         return result
-        
+
+    #
+    # Interface for Scalable Vector Graphics output
+    # http://www.w3schools.com/svg/svg_rect.asp
+    #
+    def __svg__(self):
+        return '<rect x="'+str(self.Properties.X1/10000)+'" y="'+str(self.Properties.Y1/10000)+'" width="'+str((self.Properties.X2-self.Properties.X1)/10000)+'" height="'+str((self.Properties.Y2-self.Properties.Y1)/10000)+'" style="stroke:rgb(255,0,0);stroke-width:2" />'

@@ -36,7 +36,7 @@ class SubRecord_Arc:
         self.Width = signed32()
 
         # debug
-        print self.__dict__
+        #print self.__dict__
 
         # 11 more bytes of unknown purpose
         
@@ -82,4 +82,10 @@ class Arc:
         result = "".join([0x00 for i in range(15)])
         
         return result
-        
+
+    #
+    # Interface for Scalable Vector Graphics output
+    #
+    def __svg__(self):
+        return ""
+

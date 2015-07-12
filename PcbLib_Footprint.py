@@ -33,6 +33,8 @@ class Footprint:
     def __init__(self, stream):
         self.stream = str(stream)
         self.size = len(self.stream)
+
+        self.records = []        
         self.parse()
     
     #    
@@ -44,13 +46,16 @@ class Footprint:
         # first entry is the footprint's name
         header = SubRecord(self.stream)
         self.name = SubRecord_String(header)
-        print "Footprint name: "+self.name
+        #print "Footprint name: "+self.name
     
         cursor = header.length
     
         # parse all records
         while cursor < self.size:
             record = self.parseRecord(self.stream[cursor:])
+            if record is None:
+                return
+            self.records.append(record)
             cursor += record.length
     
     #
@@ -63,17 +68,17 @@ class Footprint:
         recordType = ord(buffer[0])
     
         if recordType == RecordType.Arc:
-            print "Record type: Arc"
+            #print "Record type: Arc"
             arc = Arc(buffer)
             return arc
     
         if recordType == RecordType.Pad:
-            print "Record type: Pad"
+            #print "Record type: Pad"
             pad = Pad(buffer)
             return pad
     
         elif recordType == RecordType.Track:
-            print "Record type: Track/Line"
+            #print "Record type: Track/Line"
             track = Track(buffer)
             return track
     
@@ -82,13 +87,13 @@ class Footprint:
             return None
     
         elif recordType == RecordType.Fill:
-            print "Record type: Fill"
+            #print "Record type: Fill"
             fill = Fill(buffer)
             return fill
     
         elif recordType == RecordType.Body3D:
-            print "Record type: 3D Body"
-            print "Specifies record length. Continuing."
+            #print "Record type: 3D Body"
+            #print "Specifies record length. Continuing."
             
             subrecord = SubRecord(buffer[1:])
             # plus type byte

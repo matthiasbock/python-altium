@@ -34,7 +34,7 @@ class SubRecord_Track:
         self.Width = signed32()
 
         # debug
-        print self.__dict__
+        #print self.__dict__
 
         # 12 more bytes of unknown purpose
         
@@ -79,4 +79,12 @@ class Track:
         result = "".join([0x00 for i in range(15)])
         
         return result
+
+    #
+    # Interface for Scalable Vector Graphics output
+    # http://www.w3schools.com/svg/svg_line.asp
+    #        
+    def __svg__(self):
+        return '<line x1="'+str(self.Properties.X1/10000)+'" y1="'+str(self.Properties.Y1/10000)+'" x2="'+str(self.Properties.X2/10000)+'" y2="'+str(self.Properties.Y2/10000)+'" style="stroke:rgb(255,0,0);stroke-width:2" />'
+
         
