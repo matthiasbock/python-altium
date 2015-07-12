@@ -82,10 +82,6 @@ class Footprint:
             track = Track(buffer)
             return track
     
-        elif recordType == 5:
-            print "Record type: Unrecognized."
-            return None
-    
         elif recordType == RecordType.Fill:
             #print "Record type: Fill"
             fill = Fill(buffer)
@@ -105,3 +101,33 @@ class Footprint:
             print "Unable to derminine record length. Parser aborting."
             print "Please report an issue on https://github.com/matthiasbock/python-altium"
             return None
+
+    #
+    # Return a Scalable Vector Graphic
+    #
+    def __svg__(self, withHeader=True):
+        result = ""
+        if withHeader:
+            result += '\
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n\
+<svg\n\
+   xmlns:dc="http://purl.org/dc/elements/1.1/"\n\
+   xmlns:cc="http://creativecommons.org/ns#"\n\
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n\
+   xmlns:svg="http://www.w3.org/2000/svg"\n\
+   xmlns="http://www.w3.org/2000/svg"\n\
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"\n\
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"\n\
+   id="svg1"\n\
+   version="1.1"\
+   width="100%"\n\
+   height="100%"\n\
+   background="black"\n\
+   viewBox="-2000 -1000 4000 2000">\n'
+        for record in self.records:
+            result += record.__svg__()+'\n'
+
+        if withHeader:
+            result += '</svg>\n'
+        
+        return result

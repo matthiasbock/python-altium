@@ -2,6 +2,8 @@
 
 from olefile import OleFileIO
 
+from common import getU32
+from BinarySubRecord import *
 from PcbLib_TOC import TOC
 from PcbLib_Footprint import Footprint
 
@@ -19,14 +21,51 @@ class PcbLib:
 
         # TOC = Table Of Contents
         # A list of the footprints contained in this PcbLib can be found here:
-        self.TOC = TOC( self.readStream("Library/ComponentParamsTOC/Data") )
+        #self.TOC = TOC( self.readStream("Library/ComponentParamsTOC/Data") )
+        # not always present
+
+        #
+        # Parse library parameters
+        # Library/Data contains a list of parameters (string: "|"-separated key-value pairs)
+        # followed by the count and names of footprints in the library
+        #
+        buffer = self.readStream("Library/Data")
+
+        # Properties
+        print "Library properties:"
+        length = getU32(buffer)
+        header = buffer[4:4+length]
+        properties = header.strip('|').split('|')
+        self.Properties = {}
+        for prop in properties:
+            x = prop.split('=')
+            key = x[0]
+            if len(x) > 1:
+                value = x[1]
+            else:
+                value = ""
+            self.Properties[key] = value
+        print self.Properties
+        
+        # Footprint list
+        cursor = 4+length
+        count = getU32(buffer[cursor:])
+        cursor += 4
+        print "Footprints in library: "+str(count)
+        footprints = []
+        for i in range(count):
+            subrecord = SubRecord(buffer[cursor:])
+            name = SubRecord_String(subrecord)
+            print " * "+name
+            footprints.append(name)
+            cursor += subrecord.length
 
         # Parse all the footprints
         self.Footprints = []
-        for footprint in self.TOC.footprints:
-            print footprint
+        for footprint in footprints:
+            print "Parsing "+footprint+" ..."
             self.Footprints.append(
-                    Footprint(self.readStream(footprint["Name"]+"/Data"))
+                    Footprint(self.readStream(footprint+"/Data"))
                 )
 
     #
