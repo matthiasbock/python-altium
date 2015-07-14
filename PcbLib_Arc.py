@@ -25,15 +25,20 @@ class SubRecord_Arc:
             cursor += 4
             return i        
 
+        # helper function to unpack little-endian 64-bit floats (doubles)
+        def float64():
+            global cursor
+            (f,) = unpack('<d', data[cursor:cursor+8])
+            cursor += 8
+            return f
+
         # parse away...        
-        self.CenterX = signed32()
-        self.CenterY = signed32()
-        self.Radius  = signed32()
-        
-        # 16 bytes of unknown purpose
-        cursor += 16
-        
-        self.Width = signed32()
+        self.CenterX    = signed32()
+        self.CenterY    = signed32()
+        self.Radius     = signed32()
+        self.StartAngle = float64()
+        self.EndAngle   = float64()
+        self.Width      = signed32()
 
         # debug
         #print self.__dict__
@@ -43,8 +48,6 @@ class SubRecord_Arc:
         #
         # Arc properties yet unaccounted for:
         #
-        # Start Angle
-        # End Angle
         # Layer:                 multiple choice
         # Net:                   multiple choice
         # Locked:                true/false
