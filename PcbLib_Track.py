@@ -85,6 +85,7 @@ class Track:
     # http://www.w3schools.com/svg/svg_line.asp
     #        
     def __svg__(self):
-        return '<line x1="'+str(self.Properties.X1/10000)+'" y1="'+str(self.Properties.Y1/10000)+'" x2="'+str(self.Properties.X2/10000)+'" y2="'+str(self.Properties.Y2/10000)+'" style="stroke:rgb(255,0,0);stroke-width:2" />'
+        p = self.Properties
+        return '<line x1="'+str(p.X1/10000)+'" y1="'+str(p.Y1/10000)+'" x2="'+str(p.X2/10000)+'" y2="'+str(p.Y2/10000)+'" style="stroke:yellow;stroke-width:'+str(p.Width/10000)+';" />'
 
         

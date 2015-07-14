@@ -46,18 +46,18 @@ class SubRecord_Text:
         
         # Width? not there
 
-        self.FontType = ord(data[cursor])
+        # Font name from dropdown menu
+        self.FontName = ord(data[cursor])
         cursor += 1
 
         # unknown purpose: 0x00
         cursor += 1
         
-        # may start/end earlier
         self.Rotation = float64()
         
         self.unknownx = signed32()        
 
-        # 32 bytes somehow with a Font name
+        # 29 bytes somehow with a Font name
         cursor += 29
         
         self.unknown4 = signed32()
@@ -79,7 +79,7 @@ class SubRecord_Text:
         cursor += 9
 
         # debug
-        print self.__dict__
+        #print self.__dict__
        
         #
         # Properties yet unaccounted for:
@@ -112,7 +112,7 @@ class Text:
         
         text = SubRecord(data[1+prop.length:])
         self.Text = SubRecord_String(text)
-        print self.Text
+        #print self.Text
         
         # No bytes unaccounted for
         self.length = 1 + prop.length + text.length
@@ -129,4 +129,4 @@ class Text:
     # http://www.w3schools.com/svg/svg_text.asp
     #
     def __svg__(self):
-        return '<text x="'+str(self.Properties.X/10000)+'" y="'+str(self.Properties.Y/10000)+'" font-size="'+str(self.Properties.Height/10000)+'px" fill="green">'+self.Text+'</text>'
+        return '<text x="'+str(self.Properties.X/10000)+'" y="'+str(self.Properties.Y/10000)+'" font-size="'+str(self.Properties.Height/10000)+'px" fill="yellow">'+self.Text+'</text>'

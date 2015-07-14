@@ -85,7 +85,7 @@ class Footprint:
             return track
     
         elif recordType == RecordType.Text:
-            print "Record type: Text"
+            #print "Record type: Text"
             text = Text(buffer)
             return text
     

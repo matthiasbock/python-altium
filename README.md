@@ -1,13 +1,6 @@
-﻿# Altium schematic reader #
+﻿# Python library to parse Altium files #
 
-This is a Python command-line script that can
-parse Altium schematic (\*.SchDoc) files, convert them
-to SVG images, or display them in a window. It is incomplete and there are
-probably many schematic elements and settings that it does not (yet)
-understand.
-
-The schematic file format has been documented somewhat in [format.md]
-(format.md).
+Published under the terms and conditions of GNU Affero GPL v3 license
 
 ## Dependencies ##
 
@@ -16,18 +9,9 @@ The schematic file format has been documented somewhat in [format.md]
     <http://www.decalage.info/python/olefileio>, or version 2.4 of the Pillow
     fork, from <http://python-pillow.github.io/>. The PL fork would be
     simpler to install, but Pillow is probably more widely used.
-* TK (Only required to display schematics in a window)
 
 ## Usage ##
 
-Conversion to SVG:
-
 ```shell
-python3 altium.py schematic.SchDoc > output.svg
-```
-
-Display in a window:
-
-```shell
-python3 altium.py --renderer tk schematic.SchDoc
+./parse-PcbLib.py My.PcbLib
 ```
