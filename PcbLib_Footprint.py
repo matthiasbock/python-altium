@@ -5,6 +5,7 @@ from BinarySubRecord import *
 from PcbLib_Arc   import Arc
 from PcbLib_Pad   import Pad
 from PcbLib_Track import Track
+from PcbLib_Text  import Text
 from PcbLib_Fill  import Fill
 
 #
@@ -19,6 +20,7 @@ class RecordType:
     Arc         = 1 # binary
     Pad         = 2 # binary
     Track       = 4 # binary
+    Text        = 5 # binary + string
     Fill        = 6 # binary
     Body3D      = 12 # binary with text-based SubRecord
 
@@ -81,6 +83,11 @@ class Footprint:
             #print "Record type: Track/Line"
             track = Track(buffer)
             return track
+    
+        elif recordType == RecordType.Text:
+            print "Record type: Text"
+            text = Text(buffer)
+            return text
     
         elif recordType == RecordType.Fill:
             #print "Record type: Fill"
