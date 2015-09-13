@@ -55,7 +55,7 @@ class PcbDoc:
         while cursor < len(buffer):
             length = getU32(buffer[cursor:cursor+4])
             component = parseKeyValueString(buffer[cursor+4:cursor+length])
-            print dumps(component, sort_keys=True, indent=4)
+            #print dumps(component, sort_keys=True, indent=4)
             result.append(component)
             cursor += length+4
 

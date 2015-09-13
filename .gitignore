@@ -9,6 +9,7 @@ __pychache__
 
 *.svg
 *.log
+*.json
 
 *.Sch*
 *.Pcb*
