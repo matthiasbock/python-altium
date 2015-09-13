@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from common import getU32
+from common import *
 
 #
 # A PcbLib file contains a file "Library/ComponentParamsTOC/Data"
@@ -22,16 +22,6 @@ class TOC:
         self.footprints = []
         
         for entry in entries:
-            properties = {}
-            subentries = entry.split('|')
-            for subentry in subentries:
-                x = subentry.split('=')
-                key = x[0]
-                if len(x) > 1:
-                    value = "".join(x[1:])
-                else:
-                    value = ""
-                properties[key] = value
-            self.footprints.append(properties)
+            self.footprints.append( parseKeyValueString(entry) )
 
         #print self.footprints

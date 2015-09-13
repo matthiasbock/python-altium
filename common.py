@@ -14,3 +14,26 @@ def readShort(f):
 def getU32(buffer):
     (word,) = unpack('<I', buffer[:4])
     return word
+
+#
+# accept string, without preceeding 4 bytes of string length
+#  |a=b|c=d|0x00 ...(trailing bytes ignored)
+#
+# return dictionary
+#  { "a": "b", "c": "d" } 
+#
+def parseKeyValueString(s):
+
+    properties = s.strip('|').split('|')
+    result = {}
+
+    for prop in properties:
+        x = prop.split('=')
+        key = x[0]
+        if len(x) > 1:
+            value = x[1]
+        else:
+            value = ""
+        result[key] = value
+        
+    return result

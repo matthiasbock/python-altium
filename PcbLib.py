@@ -2,7 +2,7 @@
 
 from olefile import OleFileIO
 
-from common import getU32
+from common import *
 from BinarySubRecord import *
 from PcbLib_TOC import TOC
 from PcbLib_Footprint import Footprint
@@ -33,18 +33,8 @@ class PcbLib:
 
         # Properties
         print "Library properties:"
-        length = getU32(buffer)
-        header = buffer[4:4+length-1] # also cut away the string's null terminator
-        properties = header.strip('|').split('|')
-        self.Properties = {}
-        for prop in properties:
-            x = prop.split('=')
-            key = x[0]
-            if len(x) > 1:
-                value = x[1]
-            else:
-                value = ""
-            self.Properties[key] = value
+        length = getU32(buffer[:4])
+        self.Properties = parseKeyValueString(buffer[4:4+length])
         print self.Properties
         
         # Footprint list

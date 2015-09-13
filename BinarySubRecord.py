@@ -47,6 +47,7 @@ def SubRecord_String(subrecord):
     # skip length byte
     return subrecord.content[1:]
 
+
 #
 # There is a SubRecord that can be found
 # in all PCB Component records so far
